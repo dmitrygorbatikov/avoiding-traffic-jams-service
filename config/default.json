@@ -1,0 +1,5 @@
+{
+  "port": 4000,
+  "mongoUri": "mongodb+srv://gay:12345@cluster0.sw0w1.mongodb.net/gay-sex-db?retryWrites=true&w=majority",
+  "jwtSecret": "SecretKey"
+}
