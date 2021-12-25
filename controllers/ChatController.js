@@ -7,15 +7,15 @@ class ChatController{
             const chatCreatorId = req.user.userId
             const {secondUserId} = req.query
             if(chatCreatorId === secondUserId){
-                return res.status(400).json({message: "Вы не можете создать чат с самим собой"})
+                return res.status(400).json({error: "Вы не можете создать чат с самим собой"})
             }
             const secondUser = await User.findById(secondUserId)
             const chatCreator = await User.findById(chatCreatorId)
             if(!secondUser){
-                return res.status(400).json({message: 'User not found'})
+                return res.status(400).json({error: 'User not found'})
             }
             if(!chatCreator){
-                return res.status(400).json({message: 'User not found'})
+                return res.status(400).json({error: 'User not found'})
             }
             const candidateChat = await ChatRoutes.findOne({ $or: [ { chatCreatorId, secondUserId}, { chatCreatorId: secondUserId, secondUserId: chatCreatorId }] })
 
@@ -43,7 +43,7 @@ class ChatController{
             )
         }
         catch (e) {
-            return res.status(400).json({message:'Что-то пошло не так, попробуйте снова'})
+            return res.status(400).json({error:'Что-то пошло не так, попробуйте снова'})
         }
     }
     async findUserChats(req,res){
@@ -71,7 +71,7 @@ class ChatController{
             })
         }
         catch (e) {
-            return res.status(400).json({message:'Что-то пошло не так, попробуйте снова'})
+            return res.status(400).json({error:'Что-то пошло не так, попробуйте снова'})
         }
     }
 }

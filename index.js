@@ -51,6 +51,7 @@ app.use('/auth', require('./routes/auth.routes'))
 app.use('/user', require('./routes/user.routes'))
 app.use('/chat', require('./routes/chat.routes'))
 app.use('/message', require('./routes/message.routes'))
+app.use('/car', require('./routes/car.routes'))
 
 //start server
 function start(){

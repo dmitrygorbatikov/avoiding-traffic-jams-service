@@ -1,10 +1,17 @@
 const User = require('../models/User')
+const functions = require('../helpers/functions')
 
 class UserController {
     async searchUsers(req, res) {
         try {
+            const currentUser = User.findOne(req.user.userId)
             const users = await User.find()
             const filteredUsers = users.filter((user) => user._id.toString() !== req.user.userId.toString())
+            for (let i = 0; i < users.lenght; i++) {
+                if(functions.getNear(currentUser.lat, filteredUsers.lat, )){
+
+                }
+            }
             const newUsers = []
             for (let i = 0; i < filteredUsers.length; i++) {
                 newUsers.push({
@@ -19,7 +26,7 @@ class UserController {
             }
             return res.status(200).json({users: newUsers})
         } catch (e) {
-            return res.status(400).json({message: 'Что-то пошло не так, попробуйте снова'})
+            return res.status(400).json({error: 'Что-то пошло не так, попробуйте снова'})
         }
     }
 
@@ -27,7 +34,7 @@ class UserController {
         try {
             const user = await User.findById(req.user.userId)
             if (!user) {
-                return res.status(400).json({message: 'User not found'})
+                return res.status(400).json({error: 'User not found'})
             }
 
             return res.status(200).json(
@@ -44,7 +51,7 @@ class UserController {
                         }
                 })
         } catch (e) {
-            return res.status(400).json({message: 'Что-то пошло не так, попробуйте снова'})
+            return res.status(400).json({error: 'Что-то пошло не так, попробуйте снова'})
         }
     }
 
@@ -53,10 +60,10 @@ class UserController {
             const user = await User.findById(req.user.userId)
 
             if (!user) {
-                return res.status(400).json({message: 'User not found'})
+                return res.status(400).json({error: 'User not found'})
             }
             if(req.body.name === '' || req.body.name === ''){
-                return res.status(400).json({message: 'Name and Surname can not be empty'})
+                return res.status(400).json({error: 'Name and Surname can not be empty'})
             }
             user.name = req.body.name
             user.surname = req.body.surname
@@ -66,7 +73,7 @@ class UserController {
 
         } catch (e) {
             console.log(e)
-            return res.status(400).json({message: 'Что-то пошло не так, попробуйте снова'})
+            return res.status(400).json({error: 'Что-то пошло не так, попробуйте снова'})
         }
     }
 }

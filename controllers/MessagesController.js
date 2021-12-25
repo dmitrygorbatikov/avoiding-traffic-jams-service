@@ -62,18 +62,18 @@ class MessageController{
         try{
             const chat = await Chat.findById(req.params.chatId)
             if(!chat){
-                return res.status(400).json({message: 'Chat not found'})
+                return res.status(400).json({error: 'Chat not found'})
             }
             if(chat.secondUserId !== req.user.userId && chat.chatCreatorId !== req.user.userId || req.user.userId === req.query.secondUserId) {
-                return res.status(400).json({message: "Вы не можете получить доступ к этому чату"})
+                return res.status(400).json({error: "Вы не можете получить доступ к этому чату"})
             }
             const secondUser = await User.findById(req.query.secondUserId)
             if(!secondUser) {
-                return res.status(400).json({message: "User not found"})
+                return res.status(400).json({error: "User not found"})
             }
             const currentUser = await User.findById(req.user.userId)
             if(!currentUser) {
-                return res.status(400).json({message: "User not found"})
+                return res.status(400).json({error: "User not found"})
             }
             const messages = await Message.find({chatId: chat._id})
             let normalizeMessages = []
@@ -106,7 +106,7 @@ class MessageController{
             })
         }
         catch (e) {
-            return res.status(400).json({message:'Что-то пошло не так, попробуйте снова'})
+            return res.status(400).json({error:'Что-то пошло не так, попробуйте снова'})
         }
     }
 }

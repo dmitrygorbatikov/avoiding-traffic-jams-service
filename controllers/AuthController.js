@@ -9,7 +9,7 @@ class AuthController{
         try {
             const candidate = await User.findOne( { username: req.body.username })
             if (candidate) {
-                return res.status(400).json({message: 'Такой пользователь уже существует'})
+                return res.status(400).json({error: 'Такой пользователь уже существует'})
             }
 
             const hashedPassword = await bcrypt.hash(req.body.password, 12)
@@ -34,7 +34,7 @@ class AuthController{
             return res.status(201).json({token})
         }
         catch (e) {
-            return res.status(400).json({message: e.message})
+            return res.status(400).json({error: e.message})
         }
     }
 
@@ -45,12 +45,12 @@ class AuthController{
             const user = await User.findOne({username})
 
             if(!user){
-                return res.status(400).json({message:'Пользователь не найден'})
+                return res.status(400).json({error:'Пользователь не найден'})
             }
             const isMatch = await bcrypt.compare(password, user.password)
 
             if(!isMatch){
-                return res.status(400).json({message:'Неверный пароль, попробуйте снова'})
+                return res.status(400).json({error:'Неверный пароль, попробуйте снова'})
             }
 
             const token = jwt.sign(
@@ -60,7 +60,7 @@ class AuthController{
             return res.status(200).json({token})
         }
         catch (e) {
-            return res.status(400).json({message:'Что-то пошло не так, попробуйте снова'})
+            return res.status(400).json({error:'Что-то пошло не так, попробуйте снова'})
         }
     }
 }
